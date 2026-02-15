@@ -15,19 +15,31 @@ const Profile = () => {
             try {
                 setLoading(true)
 
-                // Fetch all food items and filter by partner
-                const response = await axios.get('http://localhost:3000/api/food', { withCredentials: true })
-                const partnerFoodItems = response.data.foodItems.filter(
+                // Fetch food partner details
+                const partnerResponse = await axios.get(
+                    `http://localhost:3000/api/food-partner/${partnerId}`,
+                    { withCredentials: true }
+                )
+
+                if (!partnerResponse.data.foodPartner) {
+                    setError('Food partner not found')
+                    setLoading(false)
+                    return
+                }
+
+                setPartner(partnerResponse.data.foodPartner)
+
+                // Fetch all food items and filter by this partner
+                const foodResponse = await axios.get(
+                    'http://localhost:3000/api/food',
+                    { withCredentials: true }
+                )
+
+                const partnerFoodItems = foodResponse.data.foodItems.filter(
                     item => item.foodPartner._id === partnerId
                 )
 
-                if (partnerFoodItems.length > 0) {
-                    setPartner(partnerFoodItems[0].foodPartner)
-                    setFoodItems(partnerFoodItems)
-                } else {
-                    setError('Food partner not found')
-                }
-
+                setFoodItems(partnerFoodItems)
                 setLoading(false)
             } catch (err) {
                 console.error('Error fetching partner data:', err)

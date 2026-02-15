@@ -17,4 +17,5 @@ router.post("/", authFoodPartnerMiddleware, upload.single("video"), createFood);
 
 /*GET api/food [protected]*/
 router.get("/", authUserMiddleware, getFood)
+
 export default router;

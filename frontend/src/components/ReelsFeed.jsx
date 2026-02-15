@@ -21,7 +21,7 @@ const ReelsFeed = () => {
                     id: item._id,
                     videoUrl: item.video,
                     description: item.description || item.name,
-                    foodPartnerId: item.foodPartner,
+                    foodPartnerId: item.foodPartner._id,
                     name: item.name
                 }))
 
