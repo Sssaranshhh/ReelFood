@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../App.css';
 import axios from "axios";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const UserLogin = () => {
   const navigate = useNavigate();
@@ -11,17 +11,17 @@ const UserLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log("Logging in.... with details: ", {email, password});
+    console.log("Logging in.... with details: ", { email, password });
 
     try {
       const response = await axios.post("http://localhost:3000/api/auth/user/login", {
         email,
         password
-      }, {withCredentials: true})
+      }, { withCredentials: true })
 
       console.log("Login successful: ", response.data);
       navigate("/")
-    } catch(error){
+    } catch (error) {
       console.error("Login failed: ", error.response?.data || error.message);
     }
   }
@@ -62,9 +62,6 @@ const UserLogin = () => {
         <div className="auth-footer">
           <p className="auth-link">
             Don't have an account? <Link to="/user/register">Create one</Link>
-          </p>
-          <p className="auth-link" style={{ marginTop: '0.5rem' }}>
-            <Link to="/user/forgot-password">Forgot password?</Link>
           </p>
           <p className="auth-link" style={{ marginTop: '0.5rem' }}>
             Login as <Link to="/food-partner/login">Food Partner</Link> instead?

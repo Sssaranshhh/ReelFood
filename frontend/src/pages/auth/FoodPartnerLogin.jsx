@@ -12,18 +12,18 @@ const FoodPartnerLogin = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    console.log("Logging in.... with details: ", {email, password});
+    console.log("Logging in.... with details: ", { email, password });
 
     try {
       const response = await axios.post("http://localhost:3000/api/auth/food-partner/login", {
         email,
         password
-      }, {withCredentials: true})
+      }, { withCredentials: true })
 
       console.log("Login successful: ", response.data);
       navigate("/create-food");
-      
-    } catch(error){
+
+    } catch (error) {
       console.error("Login failed: ", error.response?.data || error.message);
     }
   }
@@ -64,9 +64,6 @@ const FoodPartnerLogin = () => {
         <div className="auth-footer">
           <p className="auth-link">
             New partner? <Link to="/food-partner/register">Register your business</Link>
-          </p>
-          <p className="auth-link" style={{ marginTop: '0.5rem' }}>
-            <Link to="/food-partner/forgot-password">Forgot password?</Link>
           </p>
           <p className="auth-link" style={{ marginTop: '0.5rem' }}>
             Login as <Link to="/user/login">Normal User</Link> instead?

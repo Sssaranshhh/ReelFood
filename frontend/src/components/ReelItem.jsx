@@ -10,15 +10,18 @@ const ReelItem = ({ reel, isActive }) => {
         if (!video) return
 
         if (isActive) {
-            // Small delay to ensure video is ready
+            // Reduced delay for faster play
             const playTimeout = setTimeout(() => {
-                video.play().catch(err => {
-                    console.log('Auto-play prevented:', err)
-                    // Try unmuting and playing again if blocked
-                    video.muted = true
-                    video.play().catch(e => console.log('Still blocked:', e))
-                })
-            }, 100)
+                const playPromise = video.play()
+                if (playPromise !== undefined) {
+                    playPromise.catch(err => {
+                        console.log('Auto-play prevented:', err)
+                        // Ensure video is muted and try again
+                        video.muted = true
+                        video.play().catch(e => console.log('Still blocked:', e))
+                    })
+                }
+            }, 50) // Reduced from 100ms
 
             return () => clearTimeout(playTimeout)
         } else {

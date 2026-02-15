@@ -25,6 +25,10 @@ const foodPartnerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  profilePhoto: {
+    type: String,
+    required: false // Optional field for profile photo URL
+  },
 });
 
 const foodPartnerModel = mongoose.model("foodpartner", foodPartnerSchema);

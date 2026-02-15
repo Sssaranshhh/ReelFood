@@ -75,7 +75,7 @@ const Profile = () => {
         )
     }
 
-    // Get first letter of business name for avatar
+    // Get first letter of business name for avatar fallback
     const avatarLetter = partner.name.charAt(0).toUpperCase()
 
     // Calculate statistics
@@ -88,7 +88,15 @@ const Profile = () => {
             <div className="profile-header">
                 <div className="profile-info">
                     <div className="avatar">
-                        {avatarLetter}
+                        {partner.profilePhoto ? (
+                            <img
+                                src={partner.profilePhoto}
+                                alt={partner.name}
+                                className="avatar-image"
+                            />
+                        ) : (
+                            avatarLetter
+                        )}
                     </div>
                     <div className="business-details">
                         <div className="business-name">{partner.name}</div>

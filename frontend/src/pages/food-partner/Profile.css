@@ -53,6 +53,13 @@
   color: #ffffff;
   border: 3px solid var(--accent-light);
   box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .business-details {

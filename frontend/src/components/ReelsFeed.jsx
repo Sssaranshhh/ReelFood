@@ -50,11 +50,11 @@ const ReelsFeed = () => {
             setCurrentIndex(index)
         }
 
-        // Debounce scroll events for better performance
+        // Reduced debounce for faster response
         let scrollTimeout
         const debouncedScroll = () => {
             clearTimeout(scrollTimeout)
-            scrollTimeout = setTimeout(handleScroll, 100)
+            scrollTimeout = setTimeout(handleScroll, 50) // Reduced from 100ms
         }
 
         container.addEventListener('scroll', debouncedScroll)
@@ -66,7 +66,18 @@ const ReelsFeed = () => {
             container.removeEventListener('scroll', debouncedScroll)
             clearTimeout(scrollTimeout)
         }
-    }, []) // Empty dependency array - only run once on mount
+    }, [])
+
+    // Trigger play for first video when reels load
+    useEffect(() => {
+        if (reels.length > 0 && currentIndex === 0) {
+            // Small delay to ensure video element is rendered
+            const timer = setTimeout(() => {
+                setCurrentIndex(0)
+            }, 200)
+            return () => clearTimeout(timer)
+        }
+    }, [reels])
 
     if (loading) {
         return (
