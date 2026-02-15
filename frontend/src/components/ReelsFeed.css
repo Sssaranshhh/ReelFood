@@ -17,3 +17,26 @@
 .reels-feed::-webkit-scrollbar {
   display: none;  /* Chrome, Safari and Opera */
 }
+
+/* Loading, Error, and Empty States */
+.reels-feed.loading,
+.reels-feed.error,
+.reels-feed.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 1.125rem;
+}
+
+.loading-spinner,
+.error-message,
+.empty-message {
+  text-align: center;
+  padding: 2rem;
+}
+
+.error-message {
+  color: #ff6b6b;
+}
+

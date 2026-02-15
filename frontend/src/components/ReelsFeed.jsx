@@ -1,35 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react'
 import ReelItem from './ReelItem'
 import './ReelsFeed.css'
+import axios from 'axios'
 
 const ReelsFeed = () => {
     const containerRef = useRef(null)
     const [currentIndex, setCurrentIndex] = useState(0)
+    const [reels, setReels] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-    // Mock data - replace with actual API data
-    const reels = [
-        {
-            id: 1,
-            videoUrl: 'https://ik.imagekit.io/ewkwuxuol/dae5f3f4-fcc7-404b-b8a5-bb7dbdd351a0_2MvOd5zgj',
-            description: 'Delicious homemade pasta with fresh tomato sauce and basil. Perfect for a cozy dinner!',
-            storeId: 'store-1',
-            storeName: 'Italian Kitchen'
-        },
-        {
-            id: 2,
-            videoUrl: 'https://ik.imagekit.io/ewkwuxuol/a56d3c3d-750a-4135-ba56-42ddab8c26a8_Kbc6zP_CL',
-            description: 'Amazing sushi rolls made with the freshest ingredients',
-            storeId: 'store-2',
-            storeName: 'Sushi Paradise'
-        },
-        {
-            id: 3,
-            videoUrl: 'https://ik.imagekit.io/ewkwuxuol/dae5f3f4-fcc7-404b-b8a5-bb7dbdd351a0_2MvOd5zgj',
-            description: 'Crispy fried chicken with our secret spice blend that will blow your mind',
-            storeId: 'store-3',
-            storeName: 'Chicken Delight'
+    // Fetch food items from API
+    useEffect(() => {
+        const fetchFoodItems = async () => {
+            try {
+                setLoading(true)
+                const response = await axios.get("http://localhost:3000/api/food", { withCredentials: true })
+
+                const transformedReels = response.data.foodItems.map(item => ({
+                    id: item._id,
+                    videoUrl: item.video,
+                    description: item.description || item.name,
+                    foodPartnerId: item.foodPartner,
+                    name: item.name
+                }))
+
+                setReels(transformedReels)
+                setLoading(false)
+            } catch (err) {
+                console.error('Error fetching food items:', err)
+                setError('Failed to load videos')
+                setLoading(false)
+            }
         }
-    ]
+
+        fetchFoodItems()
+    }, [])
 
     useEffect(() => {
         const container = containerRef.current
@@ -39,12 +45,52 @@ const ReelsFeed = () => {
             const scrollTop = container.scrollTop
             const itemHeight = container.clientHeight
             const index = Math.round(scrollTop / itemHeight)
+
+            // Update state to trigger video play/pause
             setCurrentIndex(index)
         }
 
-        container.addEventListener('scroll', handleScroll)
-        return () => container.removeEventListener('scroll', handleScroll)
-    }, [])
+        // Debounce scroll events for better performance
+        let scrollTimeout
+        const debouncedScroll = () => {
+            clearTimeout(scrollTimeout)
+            scrollTimeout = setTimeout(handleScroll, 100)
+        }
+
+        container.addEventListener('scroll', debouncedScroll)
+
+        // Set initial index on mount
+        handleScroll()
+
+        return () => {
+            container.removeEventListener('scroll', debouncedScroll)
+            clearTimeout(scrollTimeout)
+        }
+    }, []) // Empty dependency array - only run once on mount
+
+    if (loading) {
+        return (
+            <div className="reels-feed loading">
+                <div className="loading-spinner">Loading videos...</div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="reels-feed error">
+                <div className="error-message">{error}</div>
+            </div>
+        )
+    }
+
+    if (reels.length === 0) {
+        return (
+            <div className="reels-feed empty">
+                <div className="empty-message">No videos available</div>
+            </div>
+        )
+    }
 
     return (
         <div className="reels-feed" ref={containerRef}>
