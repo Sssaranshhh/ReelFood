@@ -21,7 +21,7 @@ const FoodPartnerLogin = () => {
       }, {withCredentials: true})
 
       console.log("Login successful: ", response.data);
-      navigate("/");
+      navigate("/create-food");
       
     } catch(error){
       console.error("Login failed: ", error.response?.data || error.message);

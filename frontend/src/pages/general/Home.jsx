@@ -1,8 +1,9 @@
 import React from 'react'
+import ReelsFeed from '../../components/ReelsFeed'
 
 const Home = () => {
   return (
-    <div>Home</div>
+    <ReelsFeed />
   )
 }
 

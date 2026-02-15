@@ -1,0 +1,19 @@
+.reels-feed {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  
+  /* Hide scrollbar for cleaner look */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.reels-feed::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}

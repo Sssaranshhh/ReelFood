@@ -4,38 +4,37 @@ import '../../App.css';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
-const navigate = useNavigate();
-
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const name = e.target.name.value;
-  const contactName = e.target.contactName.value;
-  const phone = e.target.phone.value;
-  const email = e.target.email.value;
-  const address = e.target.address.value;
-  const password = e.target.password.value;
-
-  console.log('Submitting registration with:', { name, contactName, phone, address, email, password });
-
-  try {
-    const res = await axios.post("http://localhost:3000/api/auth/food-partner/register", {
-      name,
-      contactName,
-      phone,
-      email,
-      address,
-      password
-    }, {withCredentials: true})
-
-    console.log('Registration successful:', res.data);
-    navigate("/");
-  } catch (error) {
-    console.error('Registration error:', error.response?.data || error.message);
-  }
-}
-
 const FoodPartnerRegister = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const contactName = e.target.contactName.value;
+    const phone = e.target.phone.value;
+    const email = e.target.email.value;
+    const address = e.target.address.value;
+    const password = e.target.password.value;
+
+    console.log('Submitting registration with:', { name, contactName, phone, address, email, password });
+
+    try {
+      const res = await axios.post("http://localhost:3000/api/auth/food-partner/register", {
+        name,
+        contactName,
+        phone,
+        email,
+        address,
+        password
+      }, { withCredentials: true })
+
+      console.log('Registration successful:', res.data);
+      navigate("/create-food");
+    } catch (error) {
+      console.error('Registration error:', error.response?.data || error.message);
+    }
+  }
   return (
     <div className="auth-container">
       <div className="auth-card">
