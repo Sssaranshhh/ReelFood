@@ -1,8 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../App.css';
+import '../../App.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const UserRegister = () => {
+
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    
+    e.preventDefault();
+
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    console.log('Submitting registration with:', { name, email, password });
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/auth/user/register', {
+        name,
+        email,
+        password
+      }, {withCredentials: true});
+
+      console.log('Registration successful:', response.data);
+      navigate("/");
+
+    } catch (error) {
+      console.error('Registration error:', error.response?.data || error.message);
+    }
+  }
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -11,7 +40,7 @@ const UserRegister = () => {
           <p className="auth-subtitle">Join ReelFood as a user</p>
         </div>
 
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name" className="form-label">Full Name</label>
             <input

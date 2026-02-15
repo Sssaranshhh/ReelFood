@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
-  const { fullName, email, password } = req.body;
+  const { name, email, password } = req.body;
 
   const isUserAlreadyExists = await userModel.findOne({ email });
   if (isUserAlreadyExists) {
@@ -14,7 +14,7 @@ export const registerUser = async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await userModel.create({
-    fullName,
+    fullName: name,
     email,
     password: hashedPassword,
   });
@@ -30,6 +30,7 @@ export const registerUser = async (req, res) => {
 
   res.status(201).json({
     message: "User generated successfully",
+    token,
     user: {
       _id: user._id,
       email: user.email,
@@ -79,7 +80,7 @@ export const logoutUser = (req, res) => {
 };
 
 export const registerFoodPartner = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, contactName, phone, address, email, password } = req.body;
 
   const isFoodPartnerAlreadyRegistered = await foodPartnerModel.findOne({
     email,
@@ -93,6 +94,9 @@ export const registerFoodPartner = async (req, res) => {
 
   const foodPartner = await foodPartnerModel.create({
     name,
+    contactName,
+    phone,
+    address,
     email,
     password: hashedPassword,
   });
@@ -112,6 +116,9 @@ export const registerFoodPartner = async (req, res) => {
       _id: foodPartner._id,
       email: foodPartner.email,
       name: foodPartner.name,
+      contactName: foodPartner.contactName,
+      phone: foodPartner.phone,
+      address: foodPartner.address
     },
   });
 };

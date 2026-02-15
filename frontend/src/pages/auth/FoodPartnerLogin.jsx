@@ -1,8 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../App.css';
+import '../../App.css';
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    console.log("Logging in.... with details: ", {email, password});
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/auth/food-partner/login", {
+        email,
+        password
+      }, {withCredentials: true})
+
+      console.log("Login successful: ", response.data);
+      navigate("/");
+      
+    } catch(error){
+      console.error("Login failed: ", error.response?.data || error.message);
+    }
+  }
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -11,7 +35,7 @@ const FoodPartnerLogin = () => {
           <p className="auth-subtitle">Access your business dashboard</p>
         </div>
 
-        <form className="auth-form">
+        <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="email" className="form-label">Email Address</label>
             <input
