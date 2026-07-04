@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../App.css';
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config';
 
 const FoodPartnerRegister = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ const FoodPartnerRegister = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/food-partner/register", {
+      const res = await axios.post(`${API_URL}/api/auth/food-partner/register`, {
         name,
         contactName,
         phone,

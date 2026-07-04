@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './Profile.css'
+import { API_URL } from '../../config'
 
 const Profile = () => {
     const { partnerId } = useParams()
@@ -18,7 +19,7 @@ const Profile = () => {
 
                 // Fetch food partner details
                 const partnerResponse = await axios.get(
-                    `http://localhost:3000/api/food-partner/${partnerId}`,
+                    `${API_URL}/api/food-partner/${partnerId}`,
                     { withCredentials: true }
                 )
 
@@ -32,7 +33,7 @@ const Profile = () => {
 
                 // Fetch all food items and filter by this partner
                 const foodResponse = await axios.get(
-                    'http://localhost:3000/api/food',
+                    `${API_URL}/api/food`,
                     { withCredentials: true }
                 )
 

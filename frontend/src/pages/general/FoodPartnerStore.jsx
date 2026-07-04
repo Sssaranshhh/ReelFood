@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import './FoodPartnerStore.css'
+import { API_URL } from '../../config'
 
 const FoodPartnerStore = () => {
     const { partnerId } = useParams()
@@ -16,7 +17,7 @@ const FoodPartnerStore = () => {
                 setLoading(true)
 
                 // Fetch all food items and filter by partner
-                const response = await axios.get('http://localhost:3000/api/food')
+                const response = await axios.get(`${API_URL}/api/food`)
                 const partnerFoodItems = response.data.foodItems.filter(
                     item => item.foodPartner._id === partnerId
                 )

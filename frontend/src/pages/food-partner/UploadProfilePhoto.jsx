@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './UploadProfilePhoto.css'
+import { API_URL } from '../../config'
 
 const UploadProfilePhoto = () => {
     const navigate = useNavigate()
@@ -50,7 +51,7 @@ const UploadProfilePhoto = () => {
             formData.append('photo', selectedFile)
 
             const response = await axios.post(
-                'http://localhost:3000/api/food-partner/upload-photo',
+                `${API_URL}/api/food-partner/upload-photo`,
                 formData,
                 {
                     withCredentials: true,

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import ReelItem from './ReelItem'
 import './ReelsFeed.css'
 import axios from 'axios'
+import { API_URL } from '../config'
 
 const ReelsFeed = () => {
     const containerRef = useRef(null)
@@ -15,7 +16,7 @@ const ReelsFeed = () => {
         const fetchFoodItems = async () => {
             try {
                 setLoading(true)
-                const response = await axios.get("http://localhost:3000/api/food")
+                const response = await axios.get(`${API_URL}/api/food`)
 
                 const transformedReels = response.data.foodItems.map(item => ({
                     id: item._id,

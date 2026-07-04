@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import './Navigation.css'
+import { API_URL } from '../config'
 
 const Navigation = () => {
     const navigate = useNavigate()
@@ -35,8 +36,8 @@ const Navigation = () => {
             // Log out from backend
             const isPartner = user?.role === 'partner'
             const logoutUrl = isPartner 
-                ? 'http://localhost:3000/api/auth/food-partner/logout' 
-                : 'http://localhost:3000/api/auth/user/logout'
+                ? `${API_URL}/api/auth/food-partner/logout` 
+                : `${API_URL}/api/auth/user/logout`
             
             await axios.get(logoutUrl, { withCredentials: true })
         } catch (err) {
