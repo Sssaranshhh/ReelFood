@@ -12,8 +12,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+let frontendOrigin = (process.env.FRONTEND_URL || "http://localhost:5173").trim();
+if (frontendOrigin.endsWith("/")) {
+  frontendOrigin = frontendOrigin.slice(0, -1);
+}
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: frontendOrigin,
   credentials: true
 }))
 app.use(express.json());
