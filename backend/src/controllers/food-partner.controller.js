@@ -3,8 +3,14 @@ import * as storageService from "../service/storage.service.js";
 import { v4 as uuid } from "uuid";
 import path from "path";
 
+import mongoose from "mongoose";
+
 export const getFoodPartnerById = async (req, res) => {
     const foodPartnerId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(foodPartnerId)) {
+        return res.status(400).json({ message: "Invalid food partner ID format" });
+    }
 
     const foodPartner = await foodPartnerModel.findById(foodPartnerId);
 

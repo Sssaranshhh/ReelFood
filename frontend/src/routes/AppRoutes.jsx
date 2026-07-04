@@ -6,13 +6,14 @@ import FoodPartnerRegister from '../pages/auth/FoodPartnerRegister'
 import FoodPartnerLogin from '../pages/auth/FoodPartnerLogin'
 import Home from '../pages/general/Home'
 import CreateFood from '../pages/food-partner/CreateFood'
-import FoodPartnerStore from '../pages/general/FoodPartnerStore'
 import Profile from '../pages/food-partner/Profile'
 import UploadProfilePhoto from '../pages/food-partner/UploadProfilePhoto'
+import Navigation from '../components/Navigation'
 
 export const AppRoutes = () => {
     return (
         <Router>
+            <Navigation />
             <Routes>
                 <Route path="/user/register" element={<UserRegister />} />
                 <Route path="/user/login" element={<UserLogin />} />
@@ -25,4 +26,4 @@ export const AppRoutes = () => {
             </Routes>
         </Router>
     )
-}
+}

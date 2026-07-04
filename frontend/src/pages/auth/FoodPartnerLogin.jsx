@@ -17,11 +17,13 @@ const FoodPartnerLogin = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:3000/api/auth/food-partner/login", {
+      const response = await axios.post("http://localhost:3000/api/auth/food-partner/login", {
         email,
         password
       }, { withCredentials: true })
 
+      localStorage.setItem('user', JSON.stringify({ ...response.data.foodPartner, role: 'partner' }));
+      window.dispatchEvent(new Event('authChange'));
       navigate("/create-food");
 
     } catch (error) {

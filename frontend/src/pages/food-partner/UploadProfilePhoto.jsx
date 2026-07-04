@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './UploadProfilePhoto.css'
 
 const UploadProfilePhoto = () => {
+    const navigate = useNavigate()
     const [selectedFile, setSelectedFile] = useState(null)
     const [preview, setPreview] = useState(null)
     const [uploading, setUploading] = useState(false)
@@ -61,12 +63,38 @@ const UploadProfilePhoto = () => {
             console.log('Profile photo uploaded:', response.data)
             setSuccess(true)
 
-            // Clear selection after 2 seconds
+            // Update user in localStorage
+            const storedUser = localStorage.getItem('user')
+            if (storedUser) {
+                try {
+                    const parsedUser = JSON.parse(storedUser)
+                    const updatedUser = { ...parsedUser, profilePhoto: response.data.profilePhoto }
+                    localStorage.setItem('user', JSON.stringify(updatedUser))
+                    // Dispatch change event
+                    window.dispatchEvent(new Event('authChange'))
+                } catch (e) {
+                    console.error('Error updating storage user:', e)
+                }
+            }
+
+            // Redirect to their profile after 1.5 seconds to show the change
             setTimeout(() => {
                 setSelectedFile(null)
                 setPreview(null)
                 setSuccess(false)
-            }, 2000)
+                
+                const storedUserObj = localStorage.getItem('user')
+                if (storedUserObj) {
+                    const parsed = JSON.parse(storedUserObj)
+                    if (parsed._id) {
+                        navigate(`/food-partner/${parsed._id}`)
+                    } else {
+                        navigate('/')
+                    }
+                } else {
+                    navigate('/')
+                }
+            }, 1500)
 
         } catch (err) {
             console.error('Upload error:', err)

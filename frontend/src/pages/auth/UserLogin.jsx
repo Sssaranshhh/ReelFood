@@ -21,6 +21,9 @@ const UserLogin = () => {
         password
       }, { withCredentials: true })
 
+      localStorage.setItem('user', JSON.stringify({ ...response.data.user, role: 'user' }));
+      // Dispatch a custom event to notify navigation bar
+      window.dispatchEvent(new Event('authChange'));
       navigate("/")
     } catch (error) {
       setError(error.response?.data?.message || 'Invalid email or password. Please try again.')

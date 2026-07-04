@@ -22,7 +22,7 @@ const FoodPartnerRegister = () => {
     setLoading(true);
 
     try {
-      await axios.post("http://localhost:3000/api/auth/food-partner/register", {
+      const res = await axios.post("http://localhost:3000/api/auth/food-partner/register", {
         name,
         contactName,
         phone,
@@ -31,6 +31,8 @@ const FoodPartnerRegister = () => {
         password
       }, { withCredentials: true })
 
+      localStorage.setItem('user', JSON.stringify({ ...res.data.foodPartner, role: 'partner' }));
+      window.dispatchEvent(new Event('authChange'));
       navigate("/create-food");
     } catch (error) {
       setError(error.response?.data?.message || 'Registration failed. Please try again.');

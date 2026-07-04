@@ -20,12 +20,14 @@ const UserRegister = () => {
     setLoading(true);
 
     try {
-      await axios.post('http://localhost:3000/api/auth/user/register', {
+      const response = await axios.post('http://localhost:3000/api/auth/user/register', {
         name,
         email,
         password
       }, {withCredentials: true});
 
+      localStorage.setItem('user', JSON.stringify({ ...response.data.user, role: 'user' }));
+      window.dispatchEvent(new Event('authChange'));
       navigate("/");
 
     } catch (error) {

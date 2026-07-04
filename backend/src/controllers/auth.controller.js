@@ -147,7 +147,17 @@ export const loginFoodPartner = async (req, res) => {
 
   res.cookie("token", token);
 
-  return res.status(200).json({message: "Food Partner login successful"})
+  return res.status(200).json({
+    message: "Food Partner login successful",
+    foodPartner: {
+      _id: foodPartner._id,
+      email: foodPartner.email,
+      name: foodPartner.name,
+      contactName: foodPartner.contactName,
+      phone: foodPartner.phone,
+      address: foodPartner.address
+    }
+  })
 };
 
 export const logoutFoodPartner = (req, res) => {
