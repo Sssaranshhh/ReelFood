@@ -1,6 +1,7 @@
 import foodPartnerModel from "../models/foodPartner.model.js";
 import * as storageService from "../service/storage.service.js";
 import { v4 as uuid } from "uuid";
+import path from "path";
 
 export const getFoodPartnerById = async (req, res) => {
     const foodPartnerId = req.params.id;
@@ -19,8 +20,12 @@ export const getFoodPartnerById = async (req, res) => {
 
 export const uploadProfilePhoto = async (req, res) => {
     try {
+        const ext = path.extname(req.file.originalname) || ".jpg";
+        const fileName = `${uuid()}${ext}`;
+
         // Upload photo to storage service
-        const fileUploadResult = await storageService.uploadFile(req.file.buffer, uuid());
+        const fileUploadResult = await storageService.uploadFile(req.file.buffer, fileName);
+
         
         // Update food partner's profile photo
         const updatedPartner = await foodPartnerModel.findByIdAndUpdate(

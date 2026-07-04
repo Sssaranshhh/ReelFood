@@ -77,6 +77,7 @@ const UploadProfilePhoto = () => {
     }
 
     return (
+        <div className="upload-photo-page">
         <div className="upload-photo-container">
             <div className="upload-photo-card">
                 <div className="upload-photo-header">
@@ -149,6 +150,7 @@ const UploadProfilePhoto = () => {
                 )}
             </div>
         </div>
+    </div>
     )
 }
 

@@ -1,9 +1,18 @@
+/* Upload Profile Photo Page */
+.upload-photo-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  background-color: var(--bg-secondary);
+  background-image: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
+}
+
 /* Upload Profile Photo Container */
 .upload-photo-container {
   width: 100%;
   max-width: 500px;
-  margin: 0 auto;
-  padding: var(--spacing-lg);
 }
 
 .upload-photo-card {

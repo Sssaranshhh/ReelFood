@@ -13,6 +13,7 @@ const CreateFood = () => {
   const [videoPreview, setVideoPreview] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(false)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -87,10 +88,10 @@ const CreateFood = () => {
       // Reset form
       setFormData({ name: '', description: '', video: null })
       setVideoPreview(null)
+      setSuccess(true)
 
-      // Navigate to home or show success message
-      alert('Food video uploaded successfully!')
-      navigate('/')
+      // Navigate after brief success display
+      setTimeout(() => navigate('/'), 1500)
 
     } catch (err) {
       console.error('Upload error:', err)
@@ -187,6 +188,13 @@ const CreateFood = () => {
           {error && (
             <div className="error-alert">
               {error}
+            </div>
+          )}
+
+          {/* Success Message */}
+          {success && (
+            <div className="success-alert">
+              ✓ Food video uploaded successfully! Redirecting...
             </div>
           )}
 

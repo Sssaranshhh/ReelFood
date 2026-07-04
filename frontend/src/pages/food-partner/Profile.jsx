@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './Profile.css'
 
 const Profile = () => {
     const { partnerId } = useParams()
+    const navigate = useNavigate()
     const [partner, setPartner] = useState(null)
     const [foodItems, setFoodItems] = useState([])
     const [loading, setLoading] = useState(true)
@@ -84,6 +85,11 @@ const Profile = () => {
 
     return (
         <div className="profile-container">
+            {/* Back Button */}
+            <button className="profile-back-btn" onClick={() => navigate(-1)} aria-label="Go back">
+                ← Back
+            </button>
+
             {/* Profile Header */}
             <div className="profile-header">
                 <div className="profile-info">
@@ -131,7 +137,7 @@ const Profile = () => {
                                 e.target.currentTime = 0
                             }}
                         />
-                        <div className="video-label">video</div>
+                        <div className="video-label">{item.name}</div>
                     </div>
                 ))}
             </div>

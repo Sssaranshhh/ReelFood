@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 const UserRegister = () => {
 
   const navigate = useNavigate();
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
   const handleSubmit = async (e) => {
     
     e.preventDefault();
@@ -14,21 +16,22 @@ const UserRegister = () => {
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
-
-    console.log('Submitting registration with:', { name, email, password });
+    setError(null);
+    setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/user/register', {
+      await axios.post('http://localhost:3000/api/auth/user/register', {
         name,
         email,
         password
       }, {withCredentials: true});
 
-      console.log('Registration successful:', response.data);
       navigate("/");
 
     } catch (error) {
-      console.error('Registration error:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -36,6 +39,10 @@ const UserRegister = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
+          <div className="brand-logo">
+            <div className="brand-icon">🍔</div>
+            <span className="brand-name">ReelFood</span>
+          </div>
           <h1 className="auth-title">Create Account</h1>
           <p className="auth-subtitle">Join ReelFood as a user</p>
         </div>
@@ -71,9 +78,10 @@ const UserRegister = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">
-            Create Account
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? 'Creating account...' : 'Create Account'}
           </button>
+          {error && <div className="error-alert">{error}</div>}
         </form>
 
         <div className="auth-footer">

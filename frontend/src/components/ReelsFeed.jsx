@@ -15,7 +15,7 @@ const ReelsFeed = () => {
         const fetchFoodItems = async () => {
             try {
                 setLoading(true)
-                const response = await axios.get("http://localhost:3000/api/food", { withCredentials: true })
+                const response = await axios.get("http://localhost:3000/api/food")
 
                 const transformedReels = response.data.foodItems.map(item => ({
                     id: item._id,
@@ -70,14 +70,14 @@ const ReelsFeed = () => {
 
     // Trigger play for first video when reels load
     useEffect(() => {
-        if (reels.length > 0 && currentIndex === 0) {
+        if (reels.length > 0) {
             // Small delay to ensure video element is rendered
             const timer = setTimeout(() => {
-                setCurrentIndex(0)
+                setCurrentIndex(prev => prev)
             }, 200)
             return () => clearTimeout(timer)
         }
-    }, [reels])
+    }, [reels.length])
 
     if (loading) {
         return (

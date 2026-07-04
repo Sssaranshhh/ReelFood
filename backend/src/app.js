@@ -5,6 +5,11 @@ import authRoutes from "./routes/auth.routes.js";
 import foodRoutes from "./routes/food.routes.js";
 import foodPartnerRoutes from "./routes/food-partner.routes.js";
 import cors from "cors";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors({
@@ -15,6 +20,9 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+// Serve local videos statically
+app.use("/videos", express.static(path.join(__dirname, "../../videos")));
+
 app.get("/", (req, res) => {
   res.send("Hello World!!");
 });
@@ -23,3 +31,4 @@ app.use("/api/food", foodRoutes);
 app.use("/api/food-partner", foodPartnerRoutes);
 
 export default app;
+

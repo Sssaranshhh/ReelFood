@@ -16,6 +16,66 @@
   object-fit: cover;
 }
 
+/* Mute / Unmute button */
+.mute-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.15s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.mute-btn:hover {
+  background: rgba(0, 0, 0, 0.75);
+  transform: scale(1.1);
+}
+
+.mute-btn:active {
+  transform: scale(0.95);
+}
+
+/* Toast notification */
+.mute-toast {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.5rem 1.25rem;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+  animation: toastPop 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  z-index: 20;
+}
+
+@keyframes toastPop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.85); }
+  15%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  70%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+}
+
+/* Gradient overlay — stronger fade at bottom */
 .reel-overlay {
   position: absolute;
   bottom: 0;
@@ -23,25 +83,59 @@
   right: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.55) 40%,
+    rgba(0, 0, 0, 0.15) 70%,
     transparent 100%
   );
-  padding: 2rem 1.5rem;
+  padding: 2.5rem 1.5rem 2rem;
   pointer-events: none;
 }
 
 .reel-content {
-  max-width: 600px;
+  max-width: 560px;
   margin: 0 auto;
   pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.reel-tag {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  background: rgba(255, 107, 53, 0.22);
+  color: #ff8550;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 107, 53, 0.45);
+  margin-bottom: 0.15rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.15);
+  animation: fadeIn 0.4s ease;
+}
+
+
+/* Food name badge */
+.reel-name {
+  display: inline-block;
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  line-height: 1.3;
 }
 
 .reel-description {
-  color: #ffffff;
-  font-size: 0.95rem;
-  line-height: 1.4;
-  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
   
   /* Truncate to 2 lines */
   display: -webkit-box;
@@ -52,48 +146,55 @@
   text-overflow: ellipsis;
   
   /* Text shadow for better readability */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .visit-store-btn {
   display: block;
   width: 100%;
-  padding: 0.875rem 1.5rem;
-  background-color: #ff6b35;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(135deg, #ff6b35 0%, #ff4f17 100%);
   color: #ffffff;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: inherit;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(255, 79, 23, 0.4), 0 1px 4px rgba(0, 0, 0, 0.3);
   text-decoration: none;
   text-align: center;
+  letter-spacing: 0.1px;
 }
 
 .visit-store-btn:hover {
-  background-color: #ff8555;
+  background: linear-gradient(135deg, #ff8050 0%, #ff6335 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 8px 24px rgba(255, 79, 23, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .visit-store-btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 8px rgba(255, 79, 23, 0.35);
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
   .reel-overlay {
-    padding: 1.5rem 1rem;
+    padding: 2rem 1rem 1.5rem;
   }
   
+  .reel-name {
+    font-size: 1.125rem;
+  }
+
   .reel-description {
     font-size: 0.875rem;
   }
   
   .visit-store-btn {
-    padding: 0.75rem 1.25rem;
+    padding: 0.8rem 1.25rem;
     font-size: 0.9375rem;
   }
 }

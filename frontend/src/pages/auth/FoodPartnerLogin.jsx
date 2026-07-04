@@ -6,31 +6,38 @@ import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerLogin = () => {
   const navigate = useNavigate();
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-
-    console.log("Logging in.... with details: ", { email, password });
+    setError(null);
+    setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:3000/api/auth/food-partner/login", {
+      await axios.post("http://localhost:3000/api/auth/food-partner/login", {
         email,
         password
       }, { withCredentials: true })
 
-      console.log("Login successful: ", response.data);
       navigate("/create-food");
 
     } catch (error) {
-      console.error("Login failed: ", error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Invalid email or password. Please try again.')
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
+          <div className="brand-logo">
+            <div className="brand-icon">🍔</div>
+            <span className="brand-name">ReelFood</span>
+          </div>
           <h1 className="auth-title">Partner Login</h1>
           <p className="auth-subtitle">Access your business dashboard</p>
         </div>
@@ -56,9 +63,10 @@ const FoodPartnerLogin = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">
-            Sign In
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
+          {error && <div className="error-alert">{error}</div>}
         </form>
 
         <div className="auth-footer">

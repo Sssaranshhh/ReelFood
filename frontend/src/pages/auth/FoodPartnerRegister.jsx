@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 const FoodPartnerRegister = () => {
   const navigate = useNavigate();
+  const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,11 +18,11 @@ const FoodPartnerRegister = () => {
     const email = e.target.email.value;
     const address = e.target.address.value;
     const password = e.target.password.value;
-
-    console.log('Submitting registration with:', { name, contactName, phone, address, email, password });
+    setError(null);
+    setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/food-partner/register", {
+      await axios.post("http://localhost:3000/api/auth/food-partner/register", {
         name,
         contactName,
         phone,
@@ -29,16 +31,21 @@ const FoodPartnerRegister = () => {
         password
       }, { withCredentials: true })
 
-      console.log('Registration successful:', res.data);
       navigate("/create-food");
     } catch (error) {
-      console.error('Registration error:', error.response?.data || error.message);
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   }
   return (
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
+          <div className="brand-logo">
+            <div className="brand-icon">🍔</div>
+            <span className="brand-name">ReelFood</span>
+          </div>
           <h1 className="auth-title">Partner with Us</h1>
           <p className="auth-subtitle">Register your food business</p>
         </div>
@@ -104,9 +111,10 @@ const FoodPartnerRegister = () => {
             />
           </div>
 
-          <button type="submit" className="btn btn-primary">
-            Register Business
+          <button type="submit" className="btn btn-primary" disabled={loading}>
+            {loading ? 'Registering...' : 'Register Business'}
           </button>
+          {error && <div className="error-alert">{error}</div>}
         </form>
 
         <div className="auth-footer">
